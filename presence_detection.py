@@ -7,7 +7,20 @@ import paho.mqtt.client as paho
 
 import bluetooth._bluetooth as bluez
 
-mac_id_list = ["de:c4:53:4c:d5:04","c3:09:89:ed:66:de","ea:d5:67:64:e1:67"]
+#Cris / Raul / Cris car / Tag black / 
+#mac_id_list = ["de:c4:53:4c:d5:04","c3:09:89:ed:66:de","ea:d5:67:64:e1:67","3C:BD:3E:C0:F8:BC"]
+
+mac_id_cris = "de:c4:53:4c:d5:04"
+mac_id_raul = "c3:09:89:ed:66:de"
+mac_id_cris_car = "ea:d5:67:64:e1:67"
+mac_id_tag_black = "ff:ff:00:05:da:ae"
+
+mac_id_list = []
+mac_id_list.append(mac_id_cris)
+mac_id_list.append(mac_id_raul)
+mac_id_list.append(mac_id_cris_car)
+mac_id_list.append(mac_id_tag_black)
+
 client= paho.Client("PresenceDetectionNode")
 print("connecting to broker ")
 client.connect("localhost",1883)#connect
@@ -35,16 +48,16 @@ def parse_scan_message(scan_message):
 
 def publish_message(mac_id, rssi):
 
-    if(mac_id == mac_id_list[0]):
+    if(mac_id == mac_id_cris):
         print("Publishing message Cris")
         client.publish("presence_detection/cristina",rssi)
-    elif(mac_id == mac_id_list[1]):
+    elif(mac_id == mac_id_raul):
         print("Publishing message Raul")
         client.publish("presence_detection/raul",rssi)
 
-    elif(mac_id == mac_id_list[2]):
-        print("Publishing message Cris_Car")
-        client.publish("presence_detection/cristina_car",rssi)
+    elif(mac_id == mac_id_cris_car):
+        print("Publishing message Guest")
+        client.publish("presence_detection/guest",rssi)
 
 def find_mac_id(message, previous_results):
 
@@ -76,7 +89,7 @@ if __name__== "__main__":
     blescan.hci_enable_le_scan(sock)
 
     num_scans = 10
-    previous_results = [0,0,0]
+    previous_results = [0,0,0,0]
     while (num_scans > 0):
         returnedList = blescan.parse_events(sock, 10)
         #print("Scan")
